@@ -11,8 +11,33 @@ $ cd aweb
 # development
 $ make build-dev
 
+# stop development
+$ make down-dev
+
 # production mode
 $ 
+
+# stop production
+$
+```
+
+## Running the app (Windows)
+
+```bash
+$ git clone https://github.com/NOSUGARFORME/aweb
+$ cd aweb
+
+# development
+$ make build-dev-windows
+
+# stop development
+$ make down-dev-windows
+
+# production mode
+$ 
+
+# stop production
+$
 ```
 
 ## Stay in touch
