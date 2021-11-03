@@ -7,7 +7,7 @@ services:
       context: ./api
     container_name: aweb-api
     ports:
-      - ${SERVER_PORT}:${SERVER_PORT}
+      - "${SERVER_PORT}:${SERVER_PORT}"
       - "9229:9229"
 
     env_file:

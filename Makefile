@@ -12,7 +12,7 @@ up-dev:
 	docker-compose -f ./docker-compose.yml -f ./docker-compose.dev.yml up
 
 down-dev:
-	docker-compose -f ./docker-compose.yml -f ./docker-compose.dev.yml down -v
+	docker-compose -f ./docker-compose.yml -f ./docker-compose.dev.yml down
 
 build-dev-windows:
 	copy ./.development.env ./api
