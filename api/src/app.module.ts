@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { ConfigModule } from '@nestjs/config';
 import { User } from './user/user.model';
 import { AdvantageModule } from './advantage/advantage.module';
 import { CouponModule } from './coupon/coupon.module';
@@ -9,6 +8,7 @@ import { ProductModule } from './product/product.module';
 import { UserModule } from './user/user.module';
 import { RoleModule } from './role/role.module';
 import { Role } from './role/role.model';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
