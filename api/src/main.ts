@@ -5,7 +5,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 async function start() {
   const PORT = process.env.SERVER_PORT || 5000;
   const app = await NestFactory.create(AppModule);
-
+  console.log(process.env.J);
   const config = new DocumentBuilder()
     .setTitle('Учёт услуг в AskerWeb')
     .setVersion('1.0.0')
