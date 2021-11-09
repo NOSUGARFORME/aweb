@@ -1,17 +1,12 @@
-import {
-  BadRequestException,
-  Body,
-  Controller,
-  Get,
-  HttpCode,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserService } from './user.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { User } from './user.model';
-import { ALREADY_REGISTERED_ERROR } from './user.constants';
-import { LoginUserDto } from './dto/login-user.dto';
+import { AddRoleDto } from './dto/add-role.dto';
+import { JwtAuthGuard } from '../guards/jwt-auth.guard';
+import { Roles } from '../guards/roles-guard.decorator';
+import { RolesGuard } from '../guards/roles.guard';
 
 @ApiTags('Пользователи')
 @Controller('user')
@@ -22,25 +17,23 @@ export class UserController {
   @ApiResponse({ status: 200, type: User })
   @Post('register')
   async create(@Body() userDto: CreateUserDto) {
-    const user = await this.userService.findUser(userDto.email);
-    if (user) {
-      throw new BadRequestException(ALREADY_REGISTERED_ERROR);
-    }
     return this.userService.createUser(userDto);
-  }
-
-  @ApiResponse({ status: 200, type: [User] })
-  @HttpCode(200)
-  @Post('login')
-  async login(@Body() { login, password }: LoginUserDto) {
-    const { email } = await this.userService.validateUser(login, password);
-    return this.userService.login(email);
   }
 
   @ApiOperation({ summary: 'Получение всех пользователей' })
   @ApiResponse({ status: 200, type: [User] })
+  @UseGuards(JwtAuthGuard)
   @Get()
   async getAll() {
     return await this.userService.getAllUsers();
+  }
+
+  @ApiOperation({ summary: 'Выдать роль' })
+  @ApiResponse({ status: 200 })
+  @Roles('ADMIN')
+  @UseGuards(RolesGuard)
+  @Post('/role')
+  addRole(@Body() dto: AddRoleDto) {
+    return this.userService.addRole(dto);
   }
 }

@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { User } from './user/user.model';
 import { AdvantageModule } from './advantage/advantage.module';
 import { CouponModule } from './coupon/coupon.module';
@@ -32,7 +32,7 @@ import { Role } from './role/role.model';
     ProductModule,
     RoleModule,
   ],
-  providers: [ConfigService],
+  providers: [],
   controllers: [],
 })
 export class AppModule {}

@@ -1,11 +1,11 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { User } from './user.model';
 import { CreateUserDto } from './dto/create-user.dto';
 import { RoleService } from '../role/role.service';
-import { compare, genSalt, hash } from 'bcryptjs';
-import { USER_NOT_FOUND_ERROR, WRONG_PASSWORD_ERROR } from './user.constants';
+import { USER_OR_ROLE_NOT_FOUND_ERROR } from './user.constants';
 import { JwtService } from '@nestjs/jwt';
+import { AddRoleDto } from './dto/add-role.dto';
 
 @Injectable()
 export class UserService {
@@ -16,36 +16,30 @@ export class UserService {
   ) {}
 
   async createUser(dto: CreateUserDto) {
-    const salt = await genSalt(10);
-    dto = {
-      ...dto,
-      password: await hash(dto.password, salt),
-    };
     const user = await this.userRepository.create(dto);
     const role = await this.roleService.getRoleByValue('USER');
     await user.$set('roleId', role.id);
+    user.role = role;
     return user;
   }
 
   async findUser(email: string) {
     return this.userRepository.findOne({
       where: {
-        email: email,
+        email,
       },
+      include: { all: true },
     });
   }
 
-  async validateUser(email: string, password: string) {
-    const user = await this.findUser(email);
-    if (!user) {
-      throw new UnauthorizedException(USER_NOT_FOUND_ERROR);
+  async addRole(dto: AddRoleDto) {
+    const user = await this.userRepository.findByPk(dto.userId);
+    const role = await this.roleService.getRoleByValue(dto.value);
+    if (role && user) {
+      await user.$add('role', role.id);
+      return dto;
     }
-
-    const isCorrectPassword = await compare(password, user.password);
-    if (!isCorrectPassword) {
-      throw new UnauthorizedException(WRONG_PASSWORD_ERROR);
-    }
-    return { email: user.email };
+    throw new NotFoundException(USER_OR_ROLE_NOT_FOUND_ERROR);
   }
 
   async login(email: string) {
@@ -56,6 +50,6 @@ export class UserService {
   }
 
   async getAllUsers() {
-    return await this.userRepository.findAll();
+    return await this.userRepository.findAll({ include: { all: true } });
   }
 }
