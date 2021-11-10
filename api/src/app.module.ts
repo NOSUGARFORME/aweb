@@ -9,6 +9,8 @@ import { UserModule } from './user/user.module';
 import { RoleModule } from './role/role.module';
 import { Role } from './role/role.model';
 import { ConfigModule } from '@nestjs/config';
+import { Coupon } from './coupon/coupon.model';
+import { CommonModule } from './common/common.module';
 
 @Module({
   imports: [
@@ -22,7 +24,7 @@ import { ConfigModule } from '@nestjs/config';
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
-      models: [User, Role],
+      models: [User, Role, Coupon],
       autoLoadModels: true,
     }),
     UserModule,
@@ -31,6 +33,7 @@ import { ConfigModule } from '@nestjs/config';
     OrderModule,
     ProductModule,
     RoleModule,
+    CommonModule,
   ],
   providers: [],
   controllers: [],

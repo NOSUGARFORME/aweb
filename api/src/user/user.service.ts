@@ -6,6 +6,7 @@ import { RoleService } from '../role/role.service';
 import { USER_OR_ROLE_NOT_FOUND_ERROR } from './user.constants';
 import { JwtService } from '@nestjs/jwt';
 import { AddRoleDto } from './dto/add-role.dto';
+import { Role } from '../role/role.model';
 
 @Injectable()
 export class UserService {
@@ -18,7 +19,7 @@ export class UserService {
   async createUser(dto: CreateUserDto) {
     const user = await this.userRepository.create(dto);
     const role = await this.roleService.getRoleByValue('USER');
-    await user.$set('roleId', role.id);
+    await user.$set('role', [role.id]);
     user.role = role;
     return user;
   }
@@ -28,8 +29,20 @@ export class UserService {
       where: {
         email,
       },
-      include: { all: true },
+      include: Role,
     });
+  }
+
+  async findOne(condition) {
+    return this.userRepository.findOne(condition);
+  }
+
+  async updateUser(id: number, data) {
+    return this.userRepository.update(data, { where: { id } });
+  }
+
+  async deleteUser(id: number) {
+    return this.userRepository.destroy({ where: { id } });
   }
 
   async addRole(dto: AddRoleDto) {
@@ -51,5 +64,34 @@ export class UserService {
 
   async getAllUsers() {
     return await this.userRepository.findAll({ include: { all: true } });
+  }
+
+  async paginate(
+    page = 1,
+    limit = 10,
+    // where: WhereOptions<User> = { where: {} },
+    // order: Order = ['id', 'ASC'],
+  ): Promise<any> {
+    const offset = (page - 1) * limit;
+    const res = await this.userRepository.findAndCountAll({
+      // where: where,
+      // order: order,
+      limit: limit,
+      offset: offset,
+    });
+
+    const total = res.count;
+
+    return {
+      data: res.rows.map((user) => {
+        const { password, ...data } = user;
+        return data;
+      }),
+      meta: {
+        total,
+        page,
+        last_page: Math.ceil(total / limit),
+      },
+    };
   }
 }

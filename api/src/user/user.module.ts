@@ -6,6 +6,7 @@ import { UserController } from './user.controller';
 import { Role } from '../role/role.model';
 import { RoleModule } from '../role/role.module';
 import { AuthModule } from '../auth/auth.module';
+import { CommonModule } from '../common/common.module';
 
 @Module({
   controllers: [UserController],
@@ -14,6 +15,7 @@ import { AuthModule } from '../auth/auth.module';
     SequelizeModule.forFeature([User, Role]),
     RoleModule,
     forwardRef(() => AuthModule),
+    CommonModule,
   ],
   exports: [UserService],
 })
