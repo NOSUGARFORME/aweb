@@ -3,7 +3,6 @@ import {
   Controller,
   Delete,
   Get,
-  NotFoundException,
   Param,
   Post,
   Query,
@@ -24,22 +23,20 @@ export class CouponController {
   constructor(private readonly couponService: CouponService) {}
 
   @ApiOperation({ summary: 'Создание купона' })
-  @ApiResponse({ status: 200, type: Coupon })
+  @ApiResponse({ status: 201, type: Coupon })
   @Post()
   async create(@Body() couponDto: CreateCouponDto) {
     return await this.couponService.create(couponDto);
   }
 
+  @ApiOperation({ summary: 'Получение купона' })
+  @ApiResponse({ status: 200, type: Coupon })
   @Get(':id')
   async get(@Param('id') id: number) {
-    const coupon = await this.couponService.findOne(id);
-    if (!coupon) {
-      throw new NotFoundException('Такого купона нет');
-    }
-    return coupon;
+    return await this.couponService.findOne(id);
   }
 
-  @Delete('id')
+  @Delete(':id')
   async delete(@Param('id') id: number) {
     return await this.couponService.delete(id);
   }

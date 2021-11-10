@@ -42,7 +42,6 @@ export class UserController {
 
   @ApiOperation({ summary: 'Получение всех пользователей' })
   @ApiResponse({ status: 200, type: [User] })
-  //@UseGuards(JwtAuthGuard)
   @Get()
   async getAll(@Query() query) {
     let page = Number.parseInt(query.page);
