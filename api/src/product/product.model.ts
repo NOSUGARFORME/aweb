@@ -2,12 +2,14 @@ import {
   BelongsToMany,
   Column,
   DataType,
+  HasMany,
   Model,
   Table,
 } from 'sequelize-typescript';
 import { ApiProperty } from '@nestjs/swagger';
 import { ProductAdvantage } from '../advantage/products-advantage.model';
 import { Advantage } from '../advantage/advantage.model';
+import { Order } from '../order/order.model';
 
 interface ProductCreationAttrs {
   name: string;
@@ -45,4 +47,7 @@ export class Product extends Model<Product, ProductCreationAttrs> {
 
   @BelongsToMany(() => Advantage, () => ProductAdvantage)
   advantages: Advantage[];
+
+  @HasMany(() => Order)
+  orders: Order[];
 }

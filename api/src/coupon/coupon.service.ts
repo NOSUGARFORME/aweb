@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Coupon } from './coupon.model';
 import { CreateCouponDto } from './dto/create-coupon.dto';
@@ -23,9 +27,13 @@ export class CouponService {
   }
 
   async useCoupon(id: number) {
-    const data = await this.findOne(id);
-    data.numberOfUsages--;
-    return await this.couponRepository.update(data, { where: { id } });
+    return await this.findOne(id).then(async (coupon) => {
+      if (coupon.numberOfUsages < 0) {
+        throw new BadRequestException('Неизвестный купон');
+      }
+      coupon.numberOfUsages--;
+      await this.couponRepository.update(coupon, { where: { id } });
+    });
   }
 
   async delete(id: number) {

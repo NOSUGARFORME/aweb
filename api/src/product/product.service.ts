@@ -25,6 +25,10 @@ export class ProductService {
     return product;
   }
 
+  async findAll() {
+    return await this.productRepository.findAll();
+  }
+
   async findOne(id: number) {
     return await this.productRepository
       .findByPk(id, { include: { all: true } })

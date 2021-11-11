@@ -8,6 +8,7 @@ import { CommonModule } from '../common/common.module';
 @Module({
   controllers: [CouponController],
   providers: [CouponService],
+  exports: [CouponService],
   imports: [SequelizeModule.forFeature([Coupon]), CommonModule],
 })
 export class CouponModule {}

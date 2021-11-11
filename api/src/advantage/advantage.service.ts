@@ -29,16 +29,15 @@ export class AdvantageService {
   }
 
   async delete(id: number) {
-    return this.advantageRepository.destroy({ where: { id } });
+    return await this.advantageRepository.destroy({ where: { id } });
   }
 
   async findByName(name: string) {
     return await this.advantageRepository
       .findOne({ where: { name } })
       .then((advantage) => {
-        if (!advantage) {
-          throw new NotFoundException('Приемущество не найдено');
-        }
+        if (!advantage) throw new NotFoundException('Приемущество не найдено');
+
         return advantage;
       });
   }

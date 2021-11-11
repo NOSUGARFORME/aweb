@@ -1,5 +1,6 @@
-import { Column, DataType, Model, Table } from 'sequelize-typescript';
+import { Column, DataType, HasOne, Model, Table } from 'sequelize-typescript';
 import { ApiProperty } from '@nestjs/swagger';
+import { Order } from '../order/order.model';
 
 interface CouponCreationAttrs {
   discount: number;
@@ -24,4 +25,7 @@ export class Coupon extends Model<Coupon, CouponCreationAttrs> {
   @ApiProperty({ example: '3', description: 'Количество использований купона' })
   @Column({ type: DataType.INTEGER, allowNull: false })
   numberOfUsages: number;
+
+  @HasOne(() => Order)
+  order: Order;
 }

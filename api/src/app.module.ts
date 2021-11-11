@@ -14,6 +14,7 @@ import { CommonModule } from './common/common.module';
 import { Product } from './product/product.model';
 import { ProductAdvantage } from './advantage/products-advantage.model';
 import { Advantage } from './advantage/advantage.model';
+import { Order } from './order/order.model';
 
 @Module({
   imports: [
@@ -27,7 +28,7 @@ import { Advantage } from './advantage/advantage.model';
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
-      models: [User, Role, Coupon, Product, ProductAdvantage, Advantage],
+      models: [User, Role, Coupon, Product, ProductAdvantage, Advantage, Order],
       autoLoadModels: true,
     }),
     UserModule,
