@@ -11,6 +11,9 @@ import { Role } from './role/role.model';
 import { ConfigModule } from '@nestjs/config';
 import { Coupon } from './coupon/coupon.model';
 import { CommonModule } from './common/common.module';
+import { Product } from './product/product.model';
+import { ProductAdvantage } from './advantage/products-advantage.model';
+import { Advantage } from './advantage/advantage.model';
 
 @Module({
   imports: [
@@ -24,7 +27,7 @@ import { CommonModule } from './common/common.module';
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
-      models: [User, Role, Coupon],
+      models: [User, Role, Coupon, Product, ProductAdvantage, Advantage],
       autoLoadModels: true,
     }),
     UserModule,

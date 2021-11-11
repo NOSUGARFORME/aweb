@@ -14,5 +14,6 @@ import { CommonModule } from '../common/common.module';
     SequelizeModule.forFeature([Advantage, Product, ProductAdvantage]),
     CommonModule,
   ],
+  exports: [AdvantageService],
 })
 export class AdvantageModule {}
