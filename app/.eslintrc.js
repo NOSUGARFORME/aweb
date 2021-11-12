@@ -1,102 +1,49 @@
-// module.exports = {
-//   env: {
-//     browser: true,
-//     es2021: true,
-//   },
-//   extends: [
-//     'plugin:prettier/recommended',
-//     'plugin:react/recommended',
-//     'airbnb',
-//     'plugin:@typescript-eslint/recommended',
-//   ],
-//   parser: '@typescript-eslint/parser',
-//   parserOptions: {
-//     ecmaFeatures: {
-//       jsx: true,
-//     },
-//     ecmaVersion: 12,
-//     sourceType: 'module',
-//   },
-//   plugins: [
-//     'react',
-//     '@typescript-eslint',
-//     'react-hooks',
-//   ],
-//   ignorePatterns: ['.eslintrc.js'],
-//   rules: {
-//     'no-use-before-define': 'off',
-//     '@typescript-eslint/no-use-before-define': [
-//       'error',
-//     ],
-//     'react/jsx-filename-extension': [
-//       'warn',
-//       {
-//         extensions: [
-//           '.tsx',
-//         ],
-//       },
-//     ],
-//     'import/extensions': [
-//       'error',
-//       'ignorePackages',
-//       {
-//         ts: 'never',
-//         tsx: 'never',
-//       },
-//     ],
-//     'no-shadow': 'off',
-//     '@typescript-eslint/no-shadow': [
-//       'error',
-//     ],
-//     '@typescript-eslint/explicit-function-return-type': [
-//       'error',
-//       {
-//         allowExpressions: true,
-//       },
-//     ],
-//     'max-len': [
-//       'warn',
-//       {
-//         code: 80,
-//       },
-//     ],
-//     'react-hooks/rules-of-hooks': 'error',
-//     'react-hooks/exhaustive-deps': 'warn',
-//     'import/prefer-default-export': 'off',
-//     'react/prop-types': 'off',
-//   },
-//   settings: {
-//     'import/resolver': {
-//       typescript: {
-//
-//       },
-//     },
-//   },
-// };
-
 module.exports = {
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    project: 'tsconfig.json',
-    sourceType: 'module',
-  },
-  plugins: ['@typescript-eslint/eslint-plugin'],
+  root: true,
   extends: [
     'eslint:recommended',
-    'plugin:@typescript-eslint/recommended',
     'plugin:prettier/recommended',
+    'plugin:react/recommended',
+    'plugin:@typescript-eslint/eslint-recommended',
+    'plugin:@typescript-eslint/recommended',
   ],
-  root: true,
+  parser: '@typescript-eslint/parser',
   env: {
-    node: true,
+    browser: true,
+    es6: true,
     jest: true,
+    node: true,
   },
-  ignorePatterns: ['.eslintrc.js'],
+  parserOptions: {
+    ecmaVersion: 2020,
+    sourceType: 'module',
+    ecmaFeatures: {
+      jsx: true,
+      arrowFunctions: true,
+    },
+  },
+  plugins: ['react', '@typescript-eslint', 'prettier'],
+  settings: {
+    react: {
+      version: 'detect',
+    },
+    'import/resolver': {
+      node: {
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+        paths: ['./src'],
+      },
+    },
+  },
   rules: {
-    '@typescript-eslint/interface-name-prefix': 'off',
+    'comma-dangle': 'off',
+    'function-paren-newline': 'off',
+    'global-require': 'off',
+    'import/no-dynamic-require': 'off',
+    'no-inner-declarations': 'off',
+    'class-methods-use-this': 'off',
+    'import/extensions': 'off',
+    'import/prefer-default-export': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
-    '@typescript-eslint/explicit-module-boundary-types': 'off',
-    '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/no-var-requires': 'off',
   },
 };
-
