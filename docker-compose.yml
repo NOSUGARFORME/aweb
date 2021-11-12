@@ -1,21 +1,25 @@
 version: "3.9"
 
 services:
-  api:
+  app:
+    container_name: aweb-client
+    build:
+      context: ./app
+
+    depends_on:
+      - api
     restart: always
+
+  api:
+    container_name: aweb-api
     build:
       context: ./api
-    container_name: aweb-api
     ports:
       - "${SERVER_PORT}:${SERVER_PORT}"
       - "9229:9229"
-
-    env_file:
-      - .development.env
-    command: npm run start:dev
-
     depends_on:
       - postgres
+    restart: always
 
   postgres:
     container_name: postgres

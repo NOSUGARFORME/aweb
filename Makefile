@@ -5,7 +5,7 @@ ifneq (,$(wildcard .development.env))
 endif
 
 build-dev:
-	echo api client | xargs -n 1 cp .development.env
+	echo api app | xargs -n 1 cp .development.env
 	docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build --remove-orphans
 
 up-dev:
