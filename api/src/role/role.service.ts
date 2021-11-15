@@ -14,6 +14,27 @@ export class RoleService {
   }
 
   async getRoleByValue(value: string) {
-    return await this.roleRepository.findOne({ where: { value } });
+    return await this.roleRepository.findOne({
+      where: { value },
+      raw: true,
+      nest: true,
+    });
+  }
+
+  async getRole(id: number) {
+    return await this.roleRepository.findByPk(id, { include: { all: true } });
+  }
+
+  async getAll() {
+    return await this.roleRepository.findAll();
+  }
+
+  async getRoleForReg(roleId) {
+    if (roleId) {
+      console.log(roleId);
+
+      return await this.roleRepository.findByPk(roleId);
+    }
+    return await this.getRoleByValue('ADMIN');
   }
 }

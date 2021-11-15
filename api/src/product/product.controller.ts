@@ -32,6 +32,13 @@ export class ProductController {
     return await this.productService.findOne(id);
   }
 
+  @ApiOperation({ summary: 'Получение услуги' })
+  @ApiResponse({ status: 200, type: Product })
+  @Get()
+  async getAll() {
+    return await this.productService.findAll();
+  }
+
   @ApiOperation({ summary: 'Изменение усуги' })
   @ApiResponse({ status: 200, type: Product })
   @Put(':id')

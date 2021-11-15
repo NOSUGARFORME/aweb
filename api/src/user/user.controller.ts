@@ -32,12 +32,12 @@ export class UserController {
   @ApiResponse({ status: 200, type: User })
   @Post('register')
   async create(@Body() userDto: CreateUserDto) {
-    return this.userService.createUser(userDto);
+    return await this.userService.createUser(userDto);
   }
 
   @Get(':id')
   async get(@Param('id') id: number) {
-    return this.userService.findOne(id);
+    return await this.userService.findOne(id);
   }
 
   @ApiOperation({ summary: 'Получение всех пользователей' })
@@ -54,13 +54,12 @@ export class UserController {
     if (Number.isNaN(limit) || limit <= 0) {
       limit = 10;
     }
-
     return await this.userService.paginate(page, limit);
   }
 
   @Put(':id')
   async update(@Param('id') id: number, @Body() userDto: UpdateUserDto) {
-    return this.userService.updateUser(id, userDto);
+    return await this.userService.updateUser(id, userDto);
   }
 
   @Delete(':id')
@@ -71,7 +70,7 @@ export class UserController {
   @ApiOperation({ summary: 'Выдать роль' })
   @ApiResponse({ status: 200 })
   @Post('/role')
-  addRole(@Body() dto: AddRoleDto) {
-    return this.userService.addRole(dto);
+  async addRole(@Body() dto: AddRoleDto) {
+    return await this.userService.addRole(dto);
   }
 }

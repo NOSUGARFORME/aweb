@@ -2,10 +2,14 @@ version: "3.9"
 
 services:
   app:
+    build:
+      args:
+        NODE_ENV: development
     ports:
       - "3000:3000"
     volumes:
       - /app/node_modules
+      - ./app/public:/app/public:ro
       - ./app/src:/app/src:ro
     env_file:
       - .development.env
@@ -28,3 +32,7 @@ services:
       - NODE_ENV=development
 
     command: npm run start:dev
+
+  postgres:
+    env_file:
+      - api/.development.env

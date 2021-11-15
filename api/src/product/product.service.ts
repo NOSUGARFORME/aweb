@@ -22,11 +22,11 @@ export class ProductService {
         product.advantages.push(advantage);
       });
     }
-    return product;
+    return await product.save();
   }
 
   async findAll() {
-    return await this.productRepository.findAll();
+    return await this.productRepository.findAll({ include: { all: true } });
   }
 
   async findOne(id: number) {

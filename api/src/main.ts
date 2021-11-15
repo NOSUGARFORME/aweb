@@ -11,7 +11,7 @@ async function start() {
   app.useGlobalPipes(new ValidationPipe());
   app.use(cookieParser());
   app.enableCors({
-    origin: `http:localhost:{FRONTEND_PORT}`,
+    origin: `http://localhost:${process.env.CLIENT_PORT}`,
     credentials: true,
   });
 

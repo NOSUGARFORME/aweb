@@ -14,7 +14,6 @@ import {
   WRONG_PASSWORD_ERROR,
 } from './auth.constants';
 import { User } from '../user/user.model';
-import { Role } from '../role/role.model';
 
 @Injectable()
 export class AuthService {
@@ -25,6 +24,7 @@ export class AuthService {
 
   async login(userDto: LoginUserDto) {
     const user = await this.validateUser(userDto);
+    console.log();
     return await this.generateToken(user);
   }
 
@@ -40,17 +40,12 @@ export class AuthService {
       ...userDto,
       password: hashPassword,
     });
-    return this.generateToken(user);
+    return await this.generateToken(user);
   }
 
-  async verifyUser(token: string) {
+  async verifyUser(token: string): Promise<User> {
     const user = await this.jwtService.verifyAsync(token);
-    return this.userService.findOne({
-      where: {
-        id: user.id,
-      },
-      include: Role,
-    });
+    return await this.userService.findOne(user.id);
   }
 
   private async validateUser(userDto: LoginUserDto) {

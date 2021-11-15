@@ -17,6 +17,7 @@ import { Request, Response } from 'express';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 
 @ApiTags('Авторизация')
+@UseInterceptors(ClassSerializerInterceptor)
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
@@ -28,13 +29,13 @@ export class AuthController {
     @Res({ passthrough: true }) response: Response,
   ) {
     const jwt = await this.authService.login(userDto);
-    response.cookie('jwt', jwt, { httpOnly: true });
+    await response.cookie('jwt', jwt, { httpOnly: true });
     return jwt;
   }
 
   @Post('/registration')
-  registration(@Body() userDto: CreateUserDto) {
-    return this.authService.registration(userDto);
+  async registration(@Body() userDto: CreateUserDto) {
+    return await this.authService.registration(userDto);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -46,6 +47,6 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @Post('/logout')
   async logout(@Res({ passthrough: true }) response: Response) {
-    response.clearCookie('jwt');
+    await response.clearCookie('jwt');
   }
 }

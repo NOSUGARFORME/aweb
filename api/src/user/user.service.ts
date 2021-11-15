@@ -4,7 +4,6 @@ import { User } from './user.model';
 import { CreateUserDto } from './dto/create-user.dto';
 import { RoleService } from '../role/role.service';
 import { USER_OR_ROLE_NOT_FOUND_ERROR } from './user.constants';
-import { JwtService } from '@nestjs/jwt';
 import { AddRoleDto } from './dto/add-role.dto';
 import { Role } from '../role/role.model';
 
@@ -12,20 +11,19 @@ import { Role } from '../role/role.model';
 export class UserService {
   constructor(
     @InjectModel(User) private readonly userRepository: typeof User,
-    private roleService: RoleService,
-    private jwtService: JwtService,
+    private readonly roleService: RoleService,
   ) {}
 
   async createUser(dto: CreateUserDto) {
+    const role = await this.roleService.getRoleForReg(dto.roleId);
     const user = await this.userRepository.create(dto);
-    const role = await this.roleService.getRoleByValue('ADMIN');
-    await user.$set('role', [role.id]);
+    await user.$set('role', role.id);
     user.role = role;
     return user;
   }
 
   async findUser(email: string) {
-    return this.userRepository.findOne({
+    return await this.userRepository.findOne({
       where: {
         email,
       },
@@ -33,16 +31,20 @@ export class UserService {
     });
   }
 
-  async findOne(condition) {
-    return this.userRepository.findOne(condition);
+  async findOne(id: number) {
+    return await this.userRepository.findByPk(id, {
+      raw: true,
+      nest: true,
+      include: Role,
+    });
   }
 
   async updateUser(id: number, data) {
-    return this.userRepository.update(data, { where: { id } });
+    return await this.userRepository.update(data, { where: { id } });
   }
 
   async deleteUser(id: number) {
-    return this.userRepository.destroy({ where: { id } });
+    return await this.userRepository.destroy({ where: { id } });
   }
 
   async addRole(dto: AddRoleDto) {
@@ -55,15 +57,12 @@ export class UserService {
     throw new NotFoundException(USER_OR_ROLE_NOT_FOUND_ERROR);
   }
 
-  async login(email: string) {
-    const payload = { email };
-    return {
-      access_token: await this.jwtService.signAsync(payload),
-    };
-  }
-
   async getAllUsers() {
-    return await this.userRepository.findAll({ include: { all: true } });
+    return await this.userRepository.findAll({
+      raw: true,
+      nest: true,
+      include: { all: true },
+    });
   }
 
   async paginate(
@@ -78,6 +77,9 @@ export class UserService {
       // order: order,
       limit: limit,
       offset: offset,
+      include: Role,
+      raw: true,
+      nest: true,
     });
 
     const total = res.count;
