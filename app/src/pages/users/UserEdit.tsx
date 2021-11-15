@@ -52,7 +52,7 @@ const UserEdit = (props: any) => {
 
   return (
     <Wrapper>
-      <form onSubmit={submit}>
+      <form className="mt-5" onSubmit={submit}>
         <div className="mb-3">
           <label>Имя</label>
           <input type="text" className="form-control" defaultValue={name} onChange={e => setName(e.target.value)} />
@@ -88,9 +88,8 @@ const UserEdit = (props: any) => {
               );
             })}
           </select>
-
-          <button className="btn btn-outline-secondary">Сохранить</button>
         </div>
+        <button className="btn btn-outline-secondary">Сохранить</button>
       </form>
     </Wrapper>
   );

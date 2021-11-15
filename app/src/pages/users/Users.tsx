@@ -64,10 +64,10 @@ const Users = () => {
                   <td>
                     <div className="btn-group mr-2">
                       <Link to={`/users/${user.id}/edit`} className="btn btn-sm btn-outline-secondary">
-                        Edit
+                        Изменить
                       </Link>
                       <a href="#" className="btn btn-sm btn-outline-secondary" onClick={() => del(user.id)}>
-                        Delete
+                        Удалить
                       </a>
                     </div>
                   </td>

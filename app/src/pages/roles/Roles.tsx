@@ -49,11 +49,11 @@ const Roles = () => {
                     <td>{role.description}</td>
                     <td>
                       <div className="btn-group mr-2">
-                        <Link to={`/users/${role.id}/edit`} className="btn btn-sm btn-outline-secondary">
-                          Edit
+                        <Link to={`/roles/${role.id}/edit`} className="btn btn-sm btn-outline-secondary">
+                          Изменить
                         </Link>
                         <a href="#" className="btn btn-sm btn-outline-secondary" onClick={() => del(role.id)}>
-                          Delete
+                          Удалить
                         </a>
                       </div>
                     </td>

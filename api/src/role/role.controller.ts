@@ -1,6 +1,7 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { RoleService } from './role.service';
 import { CreateRoleDto } from './dto/create-role.dto';
+import { UpdateRoleDto } from './dto/update-role.dto';
 
 @Controller('role')
 export class RoleController {
@@ -11,9 +12,14 @@ export class RoleController {
     return await this.roleService.createRole(dto);
   }
 
-  @Get('/:value')
-  async getByValue(@Param() param) {
-    return await this.roleService.getRoleByValue(param.value);
+  @Put('/:id')
+  async update(@Param('id') id: number, @Body() dto: UpdateRoleDto) {
+    return await this.roleService.update(id, dto);
+  }
+
+  @Get('/:id')
+  async getByValue(@Param('id') id: number) {
+    return await this.roleService.findOne(id);
   }
 
   @Get()
